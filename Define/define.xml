@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 定义全局宏 -->
+<macro name="GLOBAL_MACRO_EXAMPLE"      value=32      desc="这是一个全局宏举例"/>
+
+<!-- 定义枚举 -->
+<macrosgroup name="GLOBAL_ENUM_EXAMPLE"   desc="这是一个全局枚举举例" >
+    <macro name="GLOBAL_ENUM_EXAMPLE_TYPE_1"                        value=1            desc="类型1"/>
+    <macro name="GLOBAL_ENUM_EXAMPLE_TYPE_2"                        value=2            desc="类型2"/>
+</macrosgroup>
