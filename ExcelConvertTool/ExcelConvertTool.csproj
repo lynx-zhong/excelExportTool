@@ -58,7 +58,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="GemBox.Spreadsheet, Version=37.3.30.1189, Culture=neutral, PublicKeyToken=b1b72c69714d4847, processorArchitecture=MSIL">

@@ -2,3 +2,4 @@ ExcelConvertTool/.vs
 ExcelConvertTool/bin
 ExcelConvertTool/ExcelToolCache
 ExcelConvertTool/obj
+*.vscode
