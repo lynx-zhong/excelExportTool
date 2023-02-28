@@ -50,17 +50,10 @@ namespace ExcelConvertTool
         #region 常量定义
         public const string ExcelFileTag = "ExcelFileTag";
         public const string FolderTag = "FolderTag";
-
         #endregion
 
         #region 变量申明
-
         Dictionary<string, FileInfo> allExcelFilesDic;   // 所有的文件
-
-        public string saveXmlPath;
-
-        public string saveCsPath;
-
         #endregion
 
         public ToolWindow()
@@ -77,50 +70,27 @@ namespace ExcelConvertTool
             excelTreeView.CheckBoxes = true;
             excelTreeView.Nodes.Clear();
 
-            //ShowCacheFloderInfo();
             ShowDefinePath();
             ShowExcelTreeList();
         }
 
         #region TreeView 操作
-        void ShowCacheFloderInfo()
-        {
-            string filePath;
-            bool isHaveOath = GetCahceFloderInfo(CommonTool.LogMark.ExcelPathMark, out filePath);
-            if (isHaveOath)
-            {
-                curChooseFolderBrowserInfo.Text = filePath;
-            }
-
-            isHaveOath = GetCahceFloderInfo(CommonTool.LogMark.CsOutputPathMark, out filePath);
-            if (isHaveOath)
-            {
-                curChooseCsSavePath.Text = filePath;
-                saveCsPath = filePath;
-            }
-
-            isHaveOath = GetCahceFloderInfo(CommonTool.LogMark.XmlOutputPathMark, out filePath);
-            if (isHaveOath)
-            {
-                curChooseXmlSavePathLable.Text = filePath;
-                saveXmlPath = filePath;
-            }
-        }
 
         void ShowDefinePath() 
         {
             string excelFolderPath = Path.GetFullPath(Define.ExcelFolderPath);
             curChooseFolderBrowserInfo.Text = excelFolderPath;
+
+            string xmlSavePath = Path.GetFullPath(Define.ExportXmlFolderPath);
+            curChooseXmlSavePathLable.Text = xmlSavePath;
+
+            string csSavePath = Path.GetFullPath(Define.ExportCSFolderPath);
+            curChooseCsSavePath.Text = csSavePath;
         }
 
         void ShowExcelTreeList()
         {
             excelTreeView.Nodes.Clear();
-
-            //string excelFolderBrowserPath;
-            //bool isHaveExcelToolLog = GetCahceFloderInfo(CommonTool.LogMark.ExcelPathMark, out excelFolderBrowserPath);
-            //if (!isHaveExcelToolLog)
-            //    return;
 
             DirectoryInfo rootDirectoryInfo = new DirectoryInfo(Define.ExcelFolderPath);
             DirectoryInfo[] allDirectorys = rootDirectoryInfo.GetDirectories();
@@ -225,28 +195,6 @@ namespace ExcelConvertTool
 
 
         #region 目录 操作
-        private void ChooseExcelFolderBrowser(object sender, EventArgs e)
-        {
-            FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
-            folderBrowser.Description = "选择配置表文件夹";
-
-            string excelFolderBrowserPath;
-            string logPath = Define.GetExcelConvertToolLogPath();
-            bool isHaveExcelToolLog = GetCahceFloderInfo(CommonTool.LogMark.ExcelPathMark, out excelFolderBrowserPath);
-            if (isHaveExcelToolLog)
-                folderBrowser.SelectedPath = excelFolderBrowserPath;
-
-            if (folderBrowser.ShowDialog() == DialogResult.OK)
-            {
-                curChooseFolderBrowserInfo.Text = folderBrowser.SelectedPath;
-
-                string mark = CommonTool.GetLogMark(CommonTool.LogMark.ExcelPathMark);
-                CommonTool.WriteLog(mark + folderBrowser.SelectedPath, true, mark);
-
-                ShowExcelTreeList();
-            }
-        }
-
         //private void XmlSavePathChooseBtn(object sender, EventArgs e)
         //{
         //    FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
@@ -265,57 +213,9 @@ namespace ExcelConvertTool
         //        CommonTool.WriteLog(mark + folderBrowser.SelectedPath,true, mark);
         //    }
         //}
+        #endregion
 
-        //private void CsSavePathChooseBtn(object sender, EventArgs e)
-        //{
-        //    FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
-        //    folderBrowser.Description = "选择Cs 存储目录";
-
-        //    string csFolderBrowserPath;
-        //    bool filePath = GetCahceFloderInfo(CommonTool.LogMark.XmlOutputPathMark, out csFolderBrowserPath);
-        //    if (filePath)
-        //        folderBrowser.SelectedPath = csFolderBrowserPath;
-
-        //    if (folderBrowser.ShowDialog() == DialogResult.OK)
-        //    {
-        //        saveCsPath = folderBrowser.SelectedPath;
-        //        curChooseCsSavePath.Text = folderBrowser.SelectedPath;
-        //        string mark = CommonTool.GetLogMark(CommonTool.LogMark.CsOutputPathMark);
-        //        CommonTool.WriteLog(mark + folderBrowser.SelectedPath, true, mark);
-        //    }
-        //}
-
-        bool GetCahceFloderInfo(CommonTool.LogMark logMark, out string outPath)
-        {
-            string excelToolLogPath = Define.GetExcelConvertToolLogPath();
-            outPath = string.Empty;
-            if (!File.Exists(excelToolLogPath))
-                return false;
-
-            string[] fileInfo = File.ReadAllLines(excelToolLogPath);
-            if (fileInfo.Length == 0)
-                return false;
-
-            string logMarkStr = CommonTool.GetLogMark(logMark);
-            outPath = getLogInfo(logMarkStr, fileInfo);
-
-            if (outPath.Equals(string.Empty))
-                return false;
-
-            return true;
-        }
-
-        string getLogInfo(string keywork, string[] filesInfo)
-        {
-            for (int i = 0; i < filesInfo.Length; i++)
-            {
-                if (filesInfo[i].StartsWith(keywork))
-                    return filesInfo[i].Replace(keywork, string.Empty);
-            }
-
-            return string.Empty;
-        }
-
+        #region 按钮功能
         private void TranslateBtn(object sender, EventArgs e)
         {
             List<FileInfo> fileInfos = GetAllSelectedNodeFiles();
@@ -328,38 +228,13 @@ namespace ExcelConvertTool
 
             logLable.Text = s;
 
-            ExportManeger.ExportExcel(fileInfos, saveXmlPath, saveCsPath);
-        }
-        #endregion
-
-        void ChooseSavePath(string saveType)
-        {
-
-        }
-
-        private void excelTreeView_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-
-        }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox3_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void curChooseFolderBrowserInfo_TextChanged(object sender, EventArgs e)
-        {
-
+            ExportManeger.ExportExcel(fileInfos);
         }
 
         private void findBtn_Click(object sender, EventArgs e)
         {
 
         }
+        #endregion
     }
 }

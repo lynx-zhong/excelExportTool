@@ -7,16 +7,9 @@ using System.Diagnostics;
 
 namespace ExcelConvertTool
 {
-    public enum ExportFileType
-    {
-        Xml = 0,
-        Bytes = 1,
-        Cs = 2,
-    }
-
     public class ExportManeger
     {
-        public static void ExportExcel(List<FileInfo> allExcels, string xmlSavePath,string csSavePath)
+        public static void ExportExcel(List<FileInfo> allExcels)
         {
             for (int i = 0; i < allExcels.Count; i++)
             {
@@ -29,9 +22,7 @@ namespace ExcelConvertTool
                             continue;
 
                         SheetData sheetData = new SheetData(excelSheetData);
-
-                        ExportXml(sheetData, xmlSavePath);
-                        ExportCS(sheetData, csSavePath);
+                        ExportCtrl(sheetData);
                     }
                 }
                 catch (Exception e)
@@ -42,8 +33,17 @@ namespace ExcelConvertTool
             }
         }
 
+        /// <summary>
+        /// 导出类型控制
+        /// </summary>
+        static void ExportCtrl(SheetData sheetData) 
+        {
+            ExportXml(sheetData);
+            ExportCS(sheetData);
+        }
+
         #region 导出xml
-        static void ExportXml(SheetData sheetData,string savePath)
+        static void ExportXml(SheetData sheetData)
         {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.AppendLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
@@ -66,7 +66,7 @@ namespace ExcelConvertTool
             stringBuilder.AppendLine("</" + sheetData.FileName + "s>");
 
 
-            string exportFileFullPath = savePath + "/" + sheetData.FileName + "Cfg.xml";
+            string exportFileFullPath = Define.ExportXmlFolderPath + "/" + sheetData.FileName + "Cfg.xml";
 
             if (File.Exists(exportFileFullPath))
                 File.Delete(exportFileFullPath);
@@ -77,12 +77,13 @@ namespace ExcelConvertTool
             sw.Close();
 
             // 输出日志
+            exportFileFullPath = Path.GetFullPath(exportFileFullPath);
             CommonTool.OutputLog(exportFileFullPath + "转换完成");
         }
         #endregion
 
-        #region 导出 读取bytes 配套cs
-        static void ExportCS(SheetData sheetData, string savePath)
+        #region 导出读取xml对应的CS文件
+        static void ExportCS(SheetData sheetData)
         {
             StringBuilder stringBuilder = new StringBuilder();
 
@@ -130,7 +131,7 @@ namespace ExcelConvertTool
             stringBuilder.AppendLine("\t}");
             stringBuilder.AppendLine("}");
 
-            string exportFileFullPath = savePath + "/" + sheetData.FileName + "Cfg.cs";
+            string exportFileFullPath = Define.ExportCSFolderPath + "/" + sheetData.FileName + "Cfg.cs";
 
             if (File.Exists(exportFileFullPath))
                 File.Delete(exportFileFullPath);
@@ -141,6 +142,7 @@ namespace ExcelConvertTool
             sw.Close();
 
             // 输出日志
+            exportFileFullPath = Path.GetFullPath(exportFileFullPath);
             CommonTool.OutputLog(exportFileFullPath + "转换完成");
         }
         #endregion

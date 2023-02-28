@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Heros>
+<Hero>
+	<id>1</id>
+	<isLeader>1</isLeader>
+	<name>瓦王</name>
+	<model>Model/model1</model>
+	<age>30</age>
+	<power>99999</power>
+	<speed>7.654</speed>
+	<hp>9876543.123</hp>
+	<someIntParams>1|2|3</someIntParams>
+	<someLongParams>9999|8888|7777</someLongParams>
+	<someFloatParams>1.1|2.2|3.3</someFloatParams>
+	<someDoubleParams>9876543.123|9876543.123</someDoubleParams>
+	<someStringParams>hello|nihao|anning</someStringParams>
+</Hero>
+<Hero>
+	<id>2</id>
+	<isLeader>0</isLeader>
+	<name>伊利丹</name>
+	<model>Model/model2</model>
+	<age>999</age>
+	<power>99999</power>
+	<speed>7.654</speed>
+	<hp>9876543.123</hp>
+	<someIntParams>1|2|3</someIntParams>
+	<someLongParams>9999|8888|7777</someLongParams>
+	<someFloatParams>1.1|2.2|3.3</someFloatParams>
+	<someDoubleParams>9876543.123|9876543.123</someDoubleParams>
+	<someStringParams>hello|nihao|anning</someStringParams>
+</Hero>
+<Hero>
+	<id>3</id>
+	<isLeader>1</isLeader>
+	<name>瓦王</name>
+	<model>Model/model1</model>
+	<age>30</age>
+	<power>99999</power>
+	<speed>7.654</speed>
+	<hp>9876543.123</hp>
+	<someIntParams>1|2|3</someIntParams>
+	<someLongParams>9999|8888|7777</someLongParams>
+	<someFloatParams>1.1|2.2|3.3</someFloatParams>
+	<someDoubleParams>9876543.123|9876543.123</someDoubleParams>
+	<someStringParams>hello|nihao|anning</someStringParams>
+</Hero>
+<Hero>
+	<id>4</id>
+	<isLeader>0</isLeader>
+	<name>伊利丹</name>
+	<model>Model/model2</model>
+	<age>999</age>
+	<power>99999</power>
+	<speed>7.654</speed>
+	<hp>9876543.123</hp>
+	<someIntParams>1|2|3</someIntParams>
+	<someLongParams>9999|8888|7777</someLongParams>
+	<someFloatParams>1.1|2.2|3.3</someFloatParams>
+	<someDoubleParams>9876543.123|9876543.123</someDoubleParams>
+	<someStringParams>hello|nihao|anning</someStringParams>
+</Hero>
+<Hero>
+	<id>5</id>
+	<isLeader>1</isLeader>
+	<name>瓦王</name>
+	<model>Model/model1</model>
+	<age>30</age>
+	<power>99999</power>
+	<speed>7.654</speed>
+	<hp>9876543.123</hp>
+	<someIntParams>1|2|3</someIntParams>
+	<someLongParams>9999|8888|7777</someLongParams>
+	<someFloatParams>1.1|2.2|3.3</someFloatParams>
+	<someDoubleParams>9876543.123|9876543.123</someDoubleParams>
+	<someStringParams>hello|nihao|anning</someStringParams>
+</Hero>
+</Heros>

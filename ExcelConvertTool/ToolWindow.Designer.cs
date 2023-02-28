@@ -58,7 +58,6 @@ namespace ExcelConvertTool
             this.excelTreeView.Size = new System.Drawing.Size(243, 568);
             this.excelTreeView.TabIndex = 0;
             this.excelTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.OnClickExeclFile);
-            this.excelTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.excelTreeView_AfterSelect);
             // 
             // curChooseFolderBrowserInfo
             // 
@@ -68,7 +67,6 @@ namespace ExcelConvertTool
             this.curChooseFolderBrowserInfo.ReadOnly = true;
             this.curChooseFolderBrowserInfo.Size = new System.Drawing.Size(365, 21);
             this.curChooseFolderBrowserInfo.TabIndex = 1;
-            this.curChooseFolderBrowserInfo.TextChanged += new System.EventHandler(this.curChooseFolderBrowserInfo_TextChanged);
             // 
             // button1
             // 
@@ -134,7 +132,6 @@ namespace ExcelConvertTool
             this.findBtn.TabIndex = 8;
             this.findBtn.Text = "搜索";
             this.findBtn.UseVisualStyleBackColor = true;
-            this.findBtn.Click += new System.EventHandler(this.findBtn_Click);
             // 
             // groupBox1
             // 
@@ -160,7 +157,6 @@ namespace ExcelConvertTool
             this.curChooseXmlSavePathLable.ReadOnly = true;
             this.curChooseXmlSavePathLable.Size = new System.Drawing.Size(405, 21);
             this.curChooseXmlSavePathLable.TabIndex = 9;
-            this.curChooseXmlSavePathLable.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // label1
             // 
@@ -232,7 +228,6 @@ namespace ExcelConvertTool
             this.curChooseCsSavePath.ReadOnly = true;
             this.curChooseCsSavePath.Size = new System.Drawing.Size(405, 21);
             this.curChooseCsSavePath.TabIndex = 12;
-            this.curChooseCsSavePath.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
             // exportPathChooseBtn
             // 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,8 +31,30 @@ namespace ExcelConvertTool
         public static string ExcelFolderPath 
         {
             get
-            { 
+            {
                 return GetAppRootPath() + "Temp/Excel/China"; 
+            }
+        }
+
+        public static string ExportXmlFolderPath {
+            get {
+                string path = GetAppRootPath() + "Temp/Export/XML";
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                return path;
+            }
+        }
+
+        public static string ExportCSFolderPath {
+            get {
+                string path = GetAppRootPath() + "Temp/Export/CS";
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                return path;
             }
         }
 
