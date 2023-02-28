@@ -7,32 +7,6 @@ namespace ExcelConvertTool
 {
     public class CommonTool
     {
-        #region Excel 配置方式
-
-        public static string SheetExportSign = "t_";
-
-        public static string ColumnNotExportSign = "#";
-
-        // todo char类型 可以换string吗
-        public static char StrSplitChar = '|';
-
-        public static int VariableTypeRowNum = 0;
-
-        public static int VariableNameRowNum = 1;
-
-        public static int VariableStartDataRowNum = 3;
-
-        #endregion
-
-        public static string ExcelConvertToolLogName = "ExcelToolLog.txt";
-
-        public static string GetAppRootPath = System.Windows.Forms.Application.StartupPath + "/";
-
-        public static string ExcelConvertToolCachePath 
-        {
-            get { return GetAppRootPath; }
-        }
-
         public enum LogMark
         {
             ExcelPathMark,
@@ -68,7 +42,7 @@ namespace ExcelConvertTool
         {
             try
             {
-                string excelToolLogPath = ExcelConvertToolCachePath + ExcelConvertToolLogName;
+                string excelToolLogPath = Define.GetExcelConvertToolLogPath();
                 if (!File.Exists(excelToolLogPath))
                     File.Create(excelToolLogPath).Close();
 

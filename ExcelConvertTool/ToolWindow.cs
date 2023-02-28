@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using GemBox.Spreadsheet;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
+using System.Security;
+using System.Security.AccessControl;
+using System.Security.Permissions;
+using Microsoft.Win32;
 
 namespace ExcelConvertTool
 {
@@ -71,7 +77,8 @@ namespace ExcelConvertTool
             excelTreeView.CheckBoxes = true;
             excelTreeView.Nodes.Clear();
 
-            ShowCacheFloderInfo();
+            //ShowCacheFloderInfo();
+            ShowDefinePath();
             ShowExcelTreeList();
         }
 
@@ -100,48 +107,43 @@ namespace ExcelConvertTool
             }
         }
 
+        void ShowDefinePath() 
+        {
+            string excelFolderPath = Path.GetFullPath(Define.ExcelFolderPath);
+            curChooseFolderBrowserInfo.Text = excelFolderPath;
+        }
+
         void ShowExcelTreeList()
         {
             excelTreeView.Nodes.Clear();
 
+            //string excelFolderBrowserPath;
+            //bool isHaveExcelToolLog = GetCahceFloderInfo(CommonTool.LogMark.ExcelPathMark, out excelFolderBrowserPath);
+            //if (!isHaveExcelToolLog)
+            //    return;
 
-            string excelFolderBrowserPath;
-            bool isHaveExcelToolLog = GetCahceFloderInfo(CommonTool.LogMark.ExcelPathMark, out excelFolderBrowserPath);
-            if (!isHaveExcelToolLog)
-                return;
+            DirectoryInfo rootDirectoryInfo = new DirectoryInfo(Define.ExcelFolderPath);
+            DirectoryInfo[] allDirectorys = rootDirectoryInfo.GetDirectories();
+            //CommonTool.SortDirectory(allDirectorys);
 
-            DirectoryInfo rootDirectoryInfo = new DirectoryInfo(excelFolderBrowserPath);
-            try
+            allExcelFilesDic = new Dictionary<string, FileInfo>();
+            foreach (DirectoryInfo directoryInfo in allDirectorys)
             {
-                DirectoryInfo[] allDirectorys = rootDirectoryInfo.GetDirectories();
-                CommonTool.SortDirectory(allDirectorys);
+                TreeNode treeNode = excelTreeView.Nodes.Add(directoryInfo.Name);
+                treeNode.Tag = FolderTag;
 
-                allExcelFilesDic = new Dictionary<string, FileInfo>();
-                foreach (DirectoryInfo directoryInfo in allDirectorys)
+                foreach (var fileItem in directoryInfo.GetFiles())
                 {
-                    TreeNode treeNode = excelTreeView.Nodes.Add(directoryInfo.Name);
-                    treeNode.Tag = FolderTag;
-
-                    foreach (var fileItem in directoryInfo.GetFiles())
+                    if (!fileItem.Name.StartsWith("~") && fileItem.Name.EndsWith(".xlsx"))
                     {
-                        if (!fileItem.Name.StartsWith("~") && fileItem.Name.EndsWith(".xlsx"))
-                        {
-                            TreeNode excelFileNode = new TreeNode();
-                            excelFileNode.Text = fileItem.Name;
-                            excelFileNode.Tag = ExcelFileTag;
-                            treeNode.Nodes.Add(excelFileNode);
+                        TreeNode excelFileNode = new TreeNode();
+                        excelFileNode.Text = fileItem.Name;
+                        excelFileNode.Tag = ExcelFileTag;
+                        treeNode.Nodes.Add(excelFileNode);
 
-                            allExcelFilesDic.Add(fileItem.Name, fileItem);
-                        }
+                        allExcelFilesDic.Add(fileItem.Name, fileItem);
                     }
                 }
-            }
-            catch (Exception )
-            {
-                string logPath = CommonTool.ExcelConvertToolCachePath + CommonTool.ExcelConvertToolLogName;
-                File.Delete(logPath);
-                curChooseFolderBrowserInfo.Text = "";
-                logLable.Text = " ";
             }
         }
 
@@ -229,7 +231,7 @@ namespace ExcelConvertTool
             folderBrowser.Description = "选择配置表文件夹";
 
             string excelFolderBrowserPath;
-            string logPath = CommonTool.ExcelConvertToolCachePath + CommonTool.ExcelConvertToolLogName;
+            string logPath = Define.GetExcelConvertToolLogPath();
             bool isHaveExcelToolLog = GetCahceFloderInfo(CommonTool.LogMark.ExcelPathMark, out excelFolderBrowserPath);
             if (isHaveExcelToolLog)
                 folderBrowser.SelectedPath = excelFolderBrowserPath;
@@ -239,53 +241,53 @@ namespace ExcelConvertTool
                 curChooseFolderBrowserInfo.Text = folderBrowser.SelectedPath;
 
                 string mark = CommonTool.GetLogMark(CommonTool.LogMark.ExcelPathMark);
-                CommonTool.WriteLog(mark + folderBrowser.SelectedPath,true, mark);
+                CommonTool.WriteLog(mark + folderBrowser.SelectedPath, true, mark);
 
                 ShowExcelTreeList();
             }
         }
 
-        private void XmlSavePathChooseBtn(object sender, EventArgs e)
-        {
-            FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
-            folderBrowser.Description = "选择xml 存储目录";
+        //private void XmlSavePathChooseBtn(object sender, EventArgs e)
+        //{
+        //    FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
+        //    folderBrowser.Description = "选择xml 存储目录";
 
-            string xmlFolderBrowserPath;
-            bool filePath = GetCahceFloderInfo(CommonTool.LogMark.XmlOutputPathMark, out xmlFolderBrowserPath);
-            if (filePath)
-                folderBrowser.SelectedPath = xmlFolderBrowserPath;
+        //    string xmlFolderBrowserPath;
+        //    bool filePath = GetCahceFloderInfo(CommonTool.LogMark.XmlOutputPathMark, out xmlFolderBrowserPath);
+        //    if (filePath)
+        //        folderBrowser.SelectedPath = xmlFolderBrowserPath;
 
-            if (folderBrowser.ShowDialog() == DialogResult.OK)
-            {
-                saveXmlPath = folderBrowser.SelectedPath;
-                curChooseXmlSavePathLable.Text = folderBrowser.SelectedPath;
-                string mark = CommonTool.GetLogMark(CommonTool.LogMark.XmlOutputPathMark);
-                CommonTool.WriteLog(mark + folderBrowser.SelectedPath,true, mark);
-            }
-        }
+        //    if (folderBrowser.ShowDialog() == DialogResult.OK)
+        //    {
+        //        saveXmlPath = folderBrowser.SelectedPath;
+        //        curChooseXmlSavePathLable.Text = folderBrowser.SelectedPath;
+        //        string mark = CommonTool.GetLogMark(CommonTool.LogMark.XmlOutputPathMark);
+        //        CommonTool.WriteLog(mark + folderBrowser.SelectedPath,true, mark);
+        //    }
+        //}
 
-        private void CsSavePathChooseBtn(object sender, EventArgs e)
-        {
-            FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
-            folderBrowser.Description = "选择Cs 存储目录";
+        //private void CsSavePathChooseBtn(object sender, EventArgs e)
+        //{
+        //    FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
+        //    folderBrowser.Description = "选择Cs 存储目录";
 
-            string csFolderBrowserPath;
-            bool filePath = GetCahceFloderInfo(CommonTool.LogMark.XmlOutputPathMark, out csFolderBrowserPath);
-            if (filePath)
-                folderBrowser.SelectedPath = csFolderBrowserPath;
+        //    string csFolderBrowserPath;
+        //    bool filePath = GetCahceFloderInfo(CommonTool.LogMark.XmlOutputPathMark, out csFolderBrowserPath);
+        //    if (filePath)
+        //        folderBrowser.SelectedPath = csFolderBrowserPath;
 
-            if (folderBrowser.ShowDialog() == DialogResult.OK)
-            {
-                saveCsPath = folderBrowser.SelectedPath;
-                curChooseCsSavePath.Text = folderBrowser.SelectedPath;
-                string mark = CommonTool.GetLogMark(CommonTool.LogMark.CsOutputPathMark);
-                CommonTool.WriteLog(mark + folderBrowser.SelectedPath, true, mark);
-            }
-        }
+        //    if (folderBrowser.ShowDialog() == DialogResult.OK)
+        //    {
+        //        saveCsPath = folderBrowser.SelectedPath;
+        //        curChooseCsSavePath.Text = folderBrowser.SelectedPath;
+        //        string mark = CommonTool.GetLogMark(CommonTool.LogMark.CsOutputPathMark);
+        //        CommonTool.WriteLog(mark + folderBrowser.SelectedPath, true, mark);
+        //    }
+        //}
 
         bool GetCahceFloderInfo(CommonTool.LogMark logMark, out string outPath)
         {
-            string excelToolLogPath = CommonTool.ExcelConvertToolCachePath + CommonTool.ExcelConvertToolLogName;
+            string excelToolLogPath = Define.GetExcelConvertToolLogPath();
             outPath = string.Empty;
             if (!File.Exists(excelToolLogPath))
                 return false;
@@ -326,13 +328,11 @@ namespace ExcelConvertTool
 
             logLable.Text = s;
 
-            ExportManeger.ExportExcel(fileInfos,saveXmlPath,saveCsPath);
+            ExportManeger.ExportExcel(fileInfos, saveXmlPath, saveCsPath);
         }
         #endregion
 
-
-
-        void ChooseSavePath(string saveType) 
+        void ChooseSavePath(string saveType)
         {
 
         }
@@ -352,6 +352,14 @@ namespace ExcelConvertTool
 
         }
 
+        private void curChooseFolderBrowserInfo_TextChanged(object sender, EventArgs e)
+        {
 
+        }
+
+        private void findBtn_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

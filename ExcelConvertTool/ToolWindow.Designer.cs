@@ -42,11 +42,11 @@ namespace ExcelConvertTool
             this.curChooseXmlSavePathLable = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.button4 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
             this.curChooseCsSavePath = new System.Windows.Forms.TextBox();
             this.exportPathChooseBtn = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -68,6 +68,7 @@ namespace ExcelConvertTool
             this.curChooseFolderBrowserInfo.ReadOnly = true;
             this.curChooseFolderBrowserInfo.Size = new System.Drawing.Size(365, 21);
             this.curChooseFolderBrowserInfo.TabIndex = 1;
+            this.curChooseFolderBrowserInfo.TextChanged += new System.EventHandler(this.curChooseFolderBrowserInfo_TextChanged);
             // 
             // button1
             // 
@@ -78,7 +79,6 @@ namespace ExcelConvertTool
             this.button1.TabIndex = 2;
             this.button1.Text = ">>";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.ChooseExcelFolderBrowser);
             // 
             // label2
             // 
@@ -134,6 +134,7 @@ namespace ExcelConvertTool
             this.findBtn.TabIndex = 8;
             this.findBtn.Text = "搜索";
             this.findBtn.UseVisualStyleBackColor = true;
+            this.findBtn.Click += new System.EventHandler(this.findBtn_Click);
             // 
             // groupBox1
             // 
@@ -191,6 +192,16 @@ namespace ExcelConvertTool
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Export";
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(322, 601);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(115, 23);
+            this.button4.TabIndex = 15;
+            this.button4.Text = "全选";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.ChooseAllNode);
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -212,7 +223,6 @@ namespace ExcelConvertTool
             this.button3.TabIndex = 13;
             this.button3.Text = ">>";
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.CsSavePathChooseBtn);
             // 
             // curChooseCsSavePath
             // 
@@ -233,17 +243,6 @@ namespace ExcelConvertTool
             this.exportPathChooseBtn.TabIndex = 9;
             this.exportPathChooseBtn.Text = ">>";
             this.exportPathChooseBtn.UseVisualStyleBackColor = true;
-            this.exportPathChooseBtn.Click += new System.EventHandler(this.XmlSavePathChooseBtn);
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(322, 601);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(115, 23);
-            this.button4.TabIndex = 15;
-            this.button4.Text = "全选";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.ChooseAllNode);
             // 
             // ToolWindow
             // 

@@ -25,7 +25,7 @@ namespace ExcelConvertTool
                     ExcelFile excelFile = ExcelFile.Load(allExcels[i].FullName);
                     foreach (ExcelWorksheet excelSheetData in excelFile.Worksheets)
                     {
-                        if (!excelSheetData.Name.StartsWith(CommonTool.SheetExportSign))
+                        if (!excelSheetData.Name.StartsWith(Define.SheetExportSign))
                             continue;
 
                         SheetData sheetData = new SheetData(excelSheetData);

@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommonTool.cs" />
+    <Compile Include="Define.cs" />
     <Compile Include="ExcelSheetData.cs" />
     <Compile Include="ExportManeger.cs" />
     <Compile Include="ToolWindow.cs">

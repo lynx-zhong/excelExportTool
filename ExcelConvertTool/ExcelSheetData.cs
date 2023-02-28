@@ -25,7 +25,7 @@ namespace ExcelConvertTool
 
         void InitSheet( ) 
         {
-            FileName = excelSheet.Name.Replace(CommonTool.SheetExportSign, "");
+            FileName = excelSheet.Name.Replace(Define.SheetExportSign, "");
 
             ExportHeadData();
 
@@ -42,7 +42,7 @@ namespace ExcelConvertTool
             Heads.Clear();
             for (int i = 0; i < maxColCount; i++)
             {
-                object variableType = excelSheet.Rows[CommonTool.VariableTypeRowNum].AllocatedCells[i].Value;
+                object variableType = excelSheet.Rows[Define.VariableTypeRowNum].AllocatedCells[i].Value;
                 if (variableType != null)
                 {
                     string variableTypeString = CommonTool.TriEndAndStart(variableType);
@@ -54,16 +54,16 @@ namespace ExcelConvertTool
                     }
                     else if (!CommonTool.CheckTypeIsItRight(variableTypeString))
                     {
-                        string str = string.Format("不支持的数据类型：{0}表，第{1}行，第{2}列:", FileName, CommonTool.VariableNameRowNum + 1, i + 1);
+                        string str = string.Format("不支持的数据类型：{0}表，第{1}行，第{2}列:", FileName, Define.VariableNameRowNum + 1, i + 1);
                         CommonTool.OutputLog(str);
                         return;
                     }
                     else
                     {
-                        object variableName = excelSheet.Rows[CommonTool.VariableNameRowNum].AllocatedCells[i].Value;
+                        object variableName = excelSheet.Rows[Define.VariableNameRowNum].AllocatedCells[i].Value;
                         if (variableName == null)
                         {
-                            string str = string.Format("变量名为空：{0}表，第{1}行，第{2}列:", FileName, CommonTool.VariableNameRowNum + 1, i + 1);
+                            string str = string.Format("变量名为空：{0}表，第{1}行，第{2}列:", FileName, Define.VariableNameRowNum + 1, i + 1);
                             CommonTool.OutputLog(str);
                             return;
                         }
@@ -71,7 +71,7 @@ namespace ExcelConvertTool
                         string variableNameStr = CommonTool.TriEndAndStart(variableName);
                         if (variableNameStr.Equals("") | variableName == null)
                         {
-                            string str = string.Format("变量名为空：{0}表，第{1}行，第{2}列:", FileName, CommonTool.VariableNameRowNum + 1, i + 1);
+                            string str = string.Format("变量名为空：{0}表，第{1}行，第{2}列:", FileName, Define.VariableNameRowNum + 1, i + 1);
                             CommonTool.OutputLog(str);
                             return;
                         }
@@ -96,7 +96,7 @@ namespace ExcelConvertTool
 
             int maxRowCount = 100000;
 
-            for (int i = CommonTool.VariableStartDataRowNum; i < maxRowCount; i++)     // 行
+            for (int i = Define.VariableStartDataRowNum; i < maxRowCount; i++)     // 行
             {
                 if (excelSheet.Rows[i].AllocatedCells[0].Value == null)
                     return;
@@ -132,7 +132,7 @@ namespace ExcelConvertTool
             Type = type;
 
             // 检测是否为策划注释列
-            IsNotes = name.StartsWith(CommonTool.ColumnNotExportSign);
+            IsNotes = name.StartsWith(Define.ColumnNotExportSign);
         }
     }
     #endregion
